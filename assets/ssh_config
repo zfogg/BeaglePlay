@@ -1,0 +1,6 @@
+
+Host bp
+  HostName beagleplay
+  User debian
+  ForwardAgent yes
+  RequestTTY yes
