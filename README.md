@@ -60,6 +60,20 @@ See [`ansible/README.md`](ansible/README.md) for detailed documentation.
 - **terminfo**: For Kitty, so the shell works.
 
 
+## Storage
+
+The operating system and its data is mostly installed and configured to the 
+16gb eMMC, and we use the sdcard for substantial storage.
+
+In this repo we have the proper setup for the 256gb sdxc card I bought, which 
+we previously used to flash Debian onto the eMMC. Wipe that and reconfigure 
+it for device storage.
+
+`/home`, `/opt`, docker data (`/var/lib/docker`), and `/var/log` are all stored on the sdcard and mounted on boot.
+
+Check `root/etc/fstab` to see details.
+
+
 ## Services & Ports
 
 Once deployed, access these services at `beagleplay:port` (when connected via Tailscale) or `beagleplay.local:port` (on local network):
@@ -79,24 +93,10 @@ Once deployed, access these services at `beagleplay:port` (when connected via Ta
   - MQTT broker (internal - used by Zigbee2MQTT and Home Assistant)
 
 
-## Storage
-
-The operating system and its data is mostly installed and configured to the 
-16gb eMMC, and we use the sdcard for substantial storage.
-
-In this repo we have the proper setup for the 256gb sdxc card I bought, which 
-we previously used to flash Debian onto the eMMC. Wipe that and reconfigure 
-it for device storage.
-
-`/home`, `/opt`, docker data (`/var/lib/docker`), and `/var/log` are all stored on the sdcard and mounted on boot.
-
-Check `root/etc/fstab` to see details.
-
-
-## .dotfiles
+## @zfogg's .dotfiles
 
 ```bash
-# Clone the dotfiles repo
+# Clone @zfogg's dotfiles repo
 git clone https://github.com/zfogg/dotfiles.git ~/src/github.com/zfogg/dotfiles
 
 # Run the installer
@@ -109,7 +109,6 @@ The installer will:
 - Symlink all dotfiles (`.zshrc`, `.tmux.conf`, etc.) through `~/.dotfiles`
 - Symlink `.config/*` subdirectories individually
 - Back up any existing files with timestamps
-- Skip platform-specific files (e.g., `.inputrc.macos` on Linux)
 
 
 ## Ready!
