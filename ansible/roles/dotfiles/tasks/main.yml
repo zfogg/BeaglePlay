@@ -54,3 +54,10 @@
   debug:
     msg: "{{ dotfiles_install.stdout_lines }}"
   when: dotfiles_install.stdout_lines is defined
+
+- name: Install Kitty terminfo
+  shell: tic -x {{ playbook_dir }}/assets/xterm-kitty.terminfo
+  args:
+    creates: "{{ debian_home.stdout }}/.terminfo/x/xterm-kitty"
+  become_user: debian
+  become: yes

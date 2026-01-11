@@ -47,9 +47,3 @@
     mode: '0440'
     validate: 'visudo -cf %s'
   become: yes
-
-- name: Install Kitty terminfo
-  shell: tic -x {{ playbook_dir }}/assets/xterm-kitty.terminfo
-  args:
-    creates: ~/.terminfo/x/xterm-kitty
-  become_user: "{{ ansible_user }}"
