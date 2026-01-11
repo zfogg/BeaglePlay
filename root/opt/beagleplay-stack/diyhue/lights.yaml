@@ -1,0 +1,45 @@
+'1':
+  id_v2: 336644c2-0066-4df8-86b1-8b2ab464db03
+  name: Big Bedroom Lamp
+  modelid: LCT015
+  uniqueid: 00:17:88:01:00:f3:ec:bf-0b
+  function: mixed
+  state:
+    'on': true
+    bri: 239
+    ct: 370
+    hue: 8418
+    sat: 140
+    xy:
+    - 0.5752999999999998
+    - 0.3275000000000001
+    alert: select
+    mode: homeautomation
+    reachable: true
+    colormode: xy
+    effect: no_effect
+  config:
+    archetype: sultanbulb
+    function: mixed
+    direction: omnidirectional
+    startup:
+      mode: safety
+      configured: true
+  protocol: mqtt
+  protocol_cfg:
+    uid: 0x001788010ebc5503_light_zigbee2mqtt
+    ip: mqtt
+    state_topic: zigbee2mqtt/0x001788010ebc5503
+    command_topic: zigbee2mqtt/0x001788010ebc5503/set
+    mqtt_server:
+      discoveryPrefix: homeassistant
+      enabled: true
+      mqttCaCerts: null
+      mqttCertfile: null
+      mqttKeyfile: null
+      mqttPassword: ''
+      mqttPort: 1883
+      mqttServer: localhost
+      mqttTls: false
+      mqttTlsInsecure: false
+      mqttUser: ''

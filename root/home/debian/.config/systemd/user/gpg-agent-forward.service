@@ -1,0 +1,13 @@
+[Unit]
+Description=GPG Agent Forwarding Bridge
+Documentation=https://github.com/zfogg/BeaglePlay
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/socat UNIX-LISTEN:/run/user/1000/gnupg/S.gpg-agent,fork TCP:127.0.0.1:9999
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

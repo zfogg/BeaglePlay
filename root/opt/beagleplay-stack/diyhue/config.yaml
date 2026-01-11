@@ -1,0 +1,100 @@
+Hue Essentials key: c5ee0c9aee7311f09ca13ce064e4e573
+IP_RANGE:
+  IP_RANGE_END: 255
+  IP_RANGE_START: 0
+  SUB_IP_RANGE_END: 0
+  SUB_IP_RANGE_START: 0
+Remote API enabled: false
+alarm:
+  enabled: false
+  lasttriggered: 0
+apiUsers: {}
+apiversion: 1.74.0
+bridgeid: B827EBFFFED4DC11
+deconz:
+  enabled: false
+discovery: true
+elgato:
+  enabled: true
+esphome:
+  enabled: true
+gateway: 0.0.0.1
+govee:
+  enabled: true
+homeassistant:
+  enabled: false
+hue: {}
+hyperion:
+  enabled: true
+ipaddress: 0.0.0.0
+linkbutton:
+  lastlinkbuttonpushed: 1768088588
+loglevel: INFO
+mac: b8:27:eb:d4:dc:11
+mqtt:
+  discoveryPrefix: homeassistant
+  enabled: true
+  mqttCaCerts: null
+  mqttCertfile: null
+  mqttKeyfile: null
+  mqttPassword: ''
+  mqttPort: 1883
+  mqttServer: localhost
+  mqttTls: false
+  mqttTlsInsecure: false
+  mqttUser: ''
+name: DiyHue Bridge
+native_multi:
+  enabled: true
+netmask: 255.255.255.0
+port:
+  enabled: false
+  ports:
+  - 80
+scanonhostip: false
+shelly:
+  enabled: true
+swupdate2:
+  autoinstall:
+    'on': true
+    updatetime: T14:00:00
+  bridge:
+    lastinstall: '2026-01-10T22:29:06'
+    state: noupdates
+  checkforupdate: false
+  install: false
+  lastchange: '2026-01-10T22:29:06'
+  state: noupdates
+swversion: '1974142030'
+tasmota:
+  enabled: true
+timezone: EST
+tpkasa:
+  enabled: true
+tradfri: {}
+users:
+  admin@diyhue.org:
+    password: scrypt:32768:8:1$58yNBcWPMC4zj8dv$91cfbcde0e7801f74c2c95ed546115ae9b0e64cb2a0c56d34c21e162ce119a486e56b535fc9eababc32735c310cb969cafe128f3fda3a8347a59119c1944eb58
+wled:
+  enabled: true
+yeelight:
+  enabled: true
+zigbee_device_discovery_info:
+  status: ready
+localtime: '2026-01-10T18:44:44'
+whitelist:
+  31e12ca2ee7411f0b06b3ce064e4e573:
+    name: WebUi
+    client_key: null
+    create_date: '2026-01-10T22:29:05'
+    last_use_date: '2026-01-11T00:00:06'
+  hueess46ee7711f09b443ce064e4e573:
+    name: Hue Essentials#iPhone
+    client_key: null
+    create_date: '2026-01-10T22:46:24'
+    last_use_date: '2026-01-10T23:51:00'
+  619d77ccee7711f08a153ce064e4e573:
+    name: Hue#iPhone
+    client_key: CAE9D32312CA42A0BF6819CA42AACCA1
+    create_date: '2026-01-10T22:46:24'
+    last_use_date: '2026-01-10T23:49:57'

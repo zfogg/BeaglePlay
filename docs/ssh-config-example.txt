@@ -1,0 +1,17 @@
+# Example SSH configuration for BeaglePlay with GPG forwarding
+# Add this to your ~/.ssh/config file
+
+Host bp
+  HostName beagleplay
+  User debian
+  ForwardAgent yes
+
+  # GPG Agent Forwarding (requires gpg-agent-forward.service on remote)
+  RemoteForward 127.0.0.1:9999 /run/user/1000/gnupg/S.gpg-agent
+
+# Alternative: Use .local domain if not using custom DNS
+# Host bp
+#   HostName beagleplay.local
+#   User debian
+#   ForwardAgent yes
+#   RemoteForward 127.0.0.1:9999 /run/user/1000/gnupg/S.gpg-agent

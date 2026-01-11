@@ -1,0 +1,67 @@
+services:
+  # MQTT broker for zigbee2mqtt and diyHue communication
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:latest
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - /opt/beagleplay-stack/mosquitto:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+    network_mode: host
+
+  # Zigbee coordinator using BeaglePlay CC1352 radio
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:latest
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+    volumes:
+      - /opt/beagleplay-stack/zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    devices:
+      - /dev/ttyS1:/dev/ttyS1
+    environment:
+      - TZ=America/Chicago
+    ports:
+      - "8080:8080"
+    network_mode: host
+
+  # Philips Hue bridge emulator
+  diyhue:
+    container_name: diyhue
+    image: diyhue/core:latest
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+      - zigbee2mqtt
+    network_mode: host
+    volumes:
+      - /opt/beagleplay-stack/diyhue:/opt/hue-emulator/config
+    environment:
+      - MAC=b8:27:eb:d4:dc:11
+      - IP=0.0.0.0
+      - DECONZ=false
+      - MQTT=true
+
+  # Home Assistant (optional - currently disabled)
+  # homeassistant:
+  #   container_name: homeassistant
+  #   image: ghcr.io/home-assistant/home-assistant:stable
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - mosquitto
+  #     - zigbee2mqtt
+  #   volumes:
+  #     - /opt/beagleplay-stack/homeassistant:/config
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /run/dbus:/run/dbus:ro
+  #   network_mode: host
+  #   privileged: true
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:
