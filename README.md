@@ -2,6 +2,7 @@
 
 [@zfogg](https://github.com/zfogg)'s BeaglePlay setup - automated with Ansible.
 
+
 ## Quick Start
 
 1. **Flash BeaglePlay** eMMC with the latest Debian flasher image from https://www.beagleboard.org/distros
@@ -31,6 +32,39 @@ That's it. Your BeaglePlay is now configured with:
 
 See [`ansible/README.md`](ansible/README.md) for detailed documentation.
 
+
+## WiFi Setup
+
+After initial deployment over USB, connect BeaglePlay to WiFi:
+
+1. **Connect to your network** (replace `SSID` and `password`):
+   ```bash
+   ssh bp
+   sudo nmcli device wifi connect "SSID" password "password"
+   ```
+
+2. **Find the WiFi IP address**:
+   ```bash
+   ip addr show wlan0 | grep "inet "
+   ```
+
+3. **Update your SSH config** (`~/.ssh/config`) to use the hostname instead of USB IP:
+   ```
+   Host bp
+       HostName beagleplay    # Changed from 192.168.7.2
+       User debian
+       ForwardAgent yes
+       RemoteForward 127.0.0.1:9999 /run/user/1000/gnupg/S.gpg-agent
+   ```
+
+4. **Connect via WiFi**:
+   ```bash
+   ssh bp
+   ```
+
+Once Tailscale is configured (see post-installation message), you can use `HostName beagleplay` to connect from anywhere on your tailnet.
+
+
 ## What Gets Installed
 
 - **System packages**: zsh, git, neovim, tmux, fzf, ripgrep, and more
@@ -44,14 +78,19 @@ See [`ansible/README.md`](ansible/README.md) for detailed documentation.
 
 ## Storage
 
-We have the proper setup for the 256gb SDXC card I bought, which we previously 
-used to flash Debian onto the eMMC. We wipe that and reconfigure it for device 
-storage.
+The operating system and its data is mostly installed and configured to the 
+16gb eMMC, and we use the sdcard for substantial storage.
+
+In this repo we have the proper setup for the 256gb sdxc card I bought, which 
+we previously used to flash Debian onto the eMMC. Wipe that and reconfigure 
+it for device storage.
 
 `/home`, `/opt`, docker data (`/var/lib/docker`), and `/var/log` are all stored on the sdcard and mounted on boot.
 
+Check `root/etc/fstab` to see details.
 
-## Dotfiles
+
+## .dotfiles
 
 ```bash
 # Clone the dotfiles repo
@@ -68,3 +107,9 @@ The installer will:
 - Symlink `.config/*` subdirectories individually
 - Back up any existing files with timestamps
 - Skip platform-specific files (e.g., `.inputrc.macos` on Linux)
+
+
+## Ready!
+
+`ssh bp` and play around! Reset your password. You're a sudoer. `docker ps` to 
+see the home automation stack and connect to it.
