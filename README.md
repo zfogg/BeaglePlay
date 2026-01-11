@@ -60,6 +60,25 @@ See [`ansible/README.md`](ansible/README.md) for detailed documentation.
 - **terminfo**: For Kitty, so the shell works.
 
 
+## Services & Ports
+
+Once deployed, access these services at `beagleplay:port` (when connected via Tailscale) or `beagleplay.local:port` (on local network):
+
+- **diyHue Bridge**: http://beagleplay:80 (or just http://beagleplay)
+  - Philips Hue bridge emulator - connect Hue bulbs or link to Hue app
+
+- **Zigbee2MQTT**: http://beagleplay:8080
+  - Web interface for managing Zigbee devices
+  - Pairs with CC1352 radio on BeaglePlay
+
+- **Home Assistant**: http://beagleplay:8123
+  - Home automation platform
+  - Integrates with diyHue and Zigbee2MQTT
+
+- **Mosquitto MQTT**: beagleplay:1883
+  - MQTT broker (internal - used by Zigbee2MQTT and Home Assistant)
+
+
 ## Storage
 
 The operating system and its data is mostly installed and configured to the 
