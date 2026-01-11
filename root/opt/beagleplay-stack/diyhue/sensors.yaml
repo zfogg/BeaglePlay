@@ -1,0 +1,24 @@
+'1':
+  name: Daylight
+  id_v1: '1'
+  id_v2: 9b40661f-cc2c-4732-b7c5-b507252c8040
+  state:
+    daylight: null
+    lastupdated: none
+  config:
+    'on': true
+    configured: true
+    sunriseoffset: 30
+    sunsetoffset: -30
+    sunrise: '07:30:00'
+    sunset: '17:30:00'
+    reachable: true
+  type: Daylight
+  modelid: PHDL00
+  manufacturername: Signify Netherlands B.V.
+  uniqueid: null
+  swversion: '1.0'
+  protocol: none
+  protocol_cfg:
+    lat: 39.1
+    long: -77.0

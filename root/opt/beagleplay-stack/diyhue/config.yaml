@@ -68,7 +68,7 @@ swupdate2:
 swversion: '1974142030'
 tasmota:
   enabled: true
-timezone: EST
+timezone: America/New_York
 tpkasa:
   enabled: true
 tradfri: {}
