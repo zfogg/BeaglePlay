@@ -10,16 +10,22 @@
 2. **Configure SSH** on your local machine (`~/.ssh/config`):
    ```
    Host bp
-       #HostName beagleplay
-       HostName 192.168.7.2
-       # NOTE: over usb it's 192.168.7.2, but you can change HostName to 
-       # "beagleplay" after you connect to wifi and auth tailscale on the device
+       HostName 192.168.7.2  # USB connection initially
        User debian
        ForwardAgent yes
+       RequestTTY yes
        RemoteForward 127.0.0.1:9999 /run/user/1000/gnupg/S.gpg-agent
    ```
 
-3. **Deploy with Ansible**:
+3. **Connect to WiFi** (optional but recommended):
+   ```bash
+   ssh bp
+   sudo nmcli device wifi connect "YOUR_SSID" password "YOUR_PASSWORD"
+   ```
+
+   You can keep using USB (192.168.7.2) or find your WiFi IP with `ip addr show wlan0`.
+
+4. **Deploy with Ansible**:
    ```bash
    make deploy
    ```
@@ -30,39 +36,17 @@ That's it. Your BeaglePlay is now configured with:
 - Optimized storage on SD card
 - All necessary packages and tools
 
+**After Wi-Fi and Tailscale setup** (see post-installation message), update your SSH config to use the hostname:
+```
+Host bp
+    HostName beagleplay  # Now using Tailscale hostname
+    User debian
+    ForwardAgent yes
+    RequestTTY yes
+    RemoteForward 127.0.0.1:9999 /run/user/1000/gnupg/S.gpg-agent
+```
+
 See [`ansible/README.md`](ansible/README.md) for detailed documentation.
-
-
-## WiFi Setup
-
-After initial deployment over USB, connect BeaglePlay to WiFi:
-
-1. **Connect to your network** (replace `SSID` and `password`):
-   ```bash
-   ssh bp
-   sudo nmcli device wifi connect "SSID" password "password"
-   ```
-
-2. **Find the WiFi IP address**:
-   ```bash
-   ip addr show wlan0 | grep "inet "
-   ```
-
-3. **Update your SSH config** (`~/.ssh/config`) to use the hostname instead of USB IP:
-   ```
-   Host bp
-       HostName beagleplay    # Changed from 192.168.7.2
-       User debian
-       ForwardAgent yes
-       RemoteForward 127.0.0.1:9999 /run/user/1000/gnupg/S.gpg-agent
-   ```
-
-4. **Connect via WiFi**:
-   ```bash
-   ssh bp
-   ```
-
-Once Tailscale is configured (see post-installation message), you can use `HostName beagleplay` to connect from anywhere on your tailnet.
 
 
 ## What Gets Installed
@@ -113,3 +97,6 @@ The installer will:
 
 `ssh bp` and play around! Reset your password. You're a sudoer. `docker ps` to 
 see the home automation stack and connect to it.
+
+Connect some hue light bulbs to the bridge or the bridge to the app. Play with 
+Home Assistant.
