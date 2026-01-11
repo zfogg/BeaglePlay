@@ -1,0 +1,46 @@
+---
+# Disable unnecessary services for headless home automation server
+
+- name: Disable and stop nginx
+  systemd:
+    name: nginx
+    enabled: no
+    state: stopped
+  become: yes
+  ignore_errors: yes
+
+- name: Disable and stop unattended-upgrades
+  systemd:
+    name: unattended-upgrades
+    enabled: no
+    state: stopped
+  become: yes
+  ignore_errors: yes
+
+- name: Disable and stop lightdm (desktop environment)
+  systemd:
+    name: lightdm
+    enabled: no
+    state: stopped
+  become: yes
+  ignore_errors: yes
+
+- name: Set default target to multi-user (no GUI)
+  systemd:
+    name: multi-user.target
+    enabled: yes
+  become: yes
+
+- name: Remove link to graphical.target
+  file:
+    path: /etc/systemd/system/default.target
+    state: absent
+  become: yes
+
+- name: Link default.target to multi-user.target
+  file:
+    src: /lib/systemd/system/multi-user.target
+    dest: /etc/systemd/system/default.target
+    state: link
+  become: yes
+  notify: Reload systemd

@@ -7,6 +7,9 @@
     - role: common
       tags: ['common', 'packages']
 
+    - role: services
+      tags: ['services', 'disable']
+
     - role: storage
       tags: ['storage', 'fstab']
 

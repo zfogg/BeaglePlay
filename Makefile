@@ -1,4 +1,4 @@
-.PHONY: help deploy check common storage docker ha gpg tailscale
+.PHONY: help deploy check common services storage docker ha gpg tailscale
 
 help:
 	@echo "BeaglePlay Ansible Deployment"
@@ -7,6 +7,7 @@ help:
 	@echo "  make deploy       - Deploy full configuration"
 	@echo "  make check        - Dry run (check mode)"
 	@echo "  make common       - Deploy common packages and setup"
+	@echo "  make services     - Disable unnecessary services"
 	@echo "  make storage      - Configure storage/fstab"
 	@echo "  make docker       - Install Docker"
 	@echo "  make ha           - Deploy home automation stack"
@@ -31,6 +32,9 @@ verbose:
 
 common:
 	ansible-playbook playbook.yml --tags common
+
+services:
+	ansible-playbook playbook.yml --tags services
 
 storage:
 	ansible-playbook playbook.yml --tags storage
