@@ -16,7 +16,7 @@
 
 - name: Deploy docker-compose.yml
   copy:
-    src: "{{ playbook_dir }}/../root/home/debian/beagleplay-stack/docker-compose.yml"
+    src: "{{ playbook_dir }}/root/home/debian/beagleplay-stack/docker-compose.yml"
     dest: /home/debian/beagleplay-stack/docker-compose.yml
     mode: '0644'
     owner: debian
@@ -25,7 +25,7 @@
 
 - name: Deploy diyHue configuration files
   copy:
-    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/diyhue/{{ item }}"
+    src: "{{ playbook_dir }}/root/opt/beagleplay-stack/diyhue/{{ item }}"
     dest: /opt/beagleplay-stack/diyhue/{{ item }}
     mode: '0644'
   loop:
@@ -36,21 +36,21 @@
 
 - name: Deploy Zigbee2MQTT configuration
   copy:
-    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/zigbee2mqtt/configuration.yaml"
+    src: "{{ playbook_dir }}/root/opt/beagleplay-stack/zigbee2mqtt/configuration.yaml"
     dest: /opt/beagleplay-stack/zigbee2mqtt/configuration.yaml
     mode: '0644'
   become: yes
 
 - name: Deploy Mosquitto configuration
   copy:
-    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/mosquitto/mosquitto.conf"
+    src: "{{ playbook_dir }}/root/opt/beagleplay-stack/mosquitto/mosquitto.conf"
     dest: /opt/beagleplay-stack/mosquitto/mosquitto.conf
     mode: '0644'
   become: yes
 
 - name: Deploy Home Assistant configuration
   copy:
-    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/homeassistant/configuration.yaml"
+    src: "{{ playbook_dir }}/root/opt/beagleplay-stack/homeassistant/configuration.yaml"
     dest: /opt/beagleplay-stack/homeassistant/configuration.yaml
     mode: '0644'
   become: yes

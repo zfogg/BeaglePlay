@@ -19,7 +19,7 @@
 
 - name: Deploy GPG agent forwarding systemd service
   copy:
-    src: "{{ playbook_dir }}/../root/home/debian/.config/systemd/user/gpg-agent-forward.service"
+    src: "{{ playbook_dir }}/root/home/debian/.config/systemd/user/gpg-agent-forward.service"
     dest: /home/debian/.config/systemd/user/gpg-agent-forward.service
     mode: '0644'
     owner: debian
@@ -29,7 +29,7 @@
 
 - name: Deploy GPG configuration
   copy:
-    src: "{{ playbook_dir }}/../root/home/debian/.gnupg/{{ item }}"
+    src: "{{ playbook_dir }}/root/home/debian/.gnupg/{{ item }}"
     dest: /home/debian/.gnupg/{{ item }}
     mode: '0600'
     owner: debian
@@ -39,12 +39,12 @@
     - gpg-agent.conf
   become: yes
 
-- name: Enable GPG agent forwarding service
-  systemd:
-    name: gpg-agent-forward.service
-    enabled: yes
-    state: started
-    scope: user
+- name: Enable and start GPG agent forwarding service
+  shell: |
+    export XDG_RUNTIME_DIR=/run/user/$(id -u)
+    systemctl --user daemon-reload
+    systemctl --user enable gpg-agent-forward.service
+    systemctl --user restart gpg-agent-forward.service
   become_user: debian
-  environment:
-    XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_uid }}"
+  args:
+    executable: /bin/bash
