@@ -1,28 +1,41 @@
 ---
 # Install and configure dotfiles
 
+- name: Get debian user home directory
+  shell: echo ~debian
+  register: debian_home
+  changed_when: false
+
 - name: Create src directory structure
   file:
-    path: "{{ ansible_env.HOME }}/src/github.com/zfogg"
+    path: "{{ debian_home.stdout }}/src/github.com/zfogg"
     state: directory
     mode: '0755'
-  become_user: debian
+    owner: debian
+    group: debian
+  become: yes
+
+- name: Check if dotfiles repository exists
+  stat:
+    path: "{{ debian_home.stdout }}/src/github.com/zfogg/dotfiles/.git"
+  register: dotfiles_repo
 
 - name: Clone dotfiles repository
-  git:
-    repo: https://github.com/zfogg/dotfiles.git
-    dest: "{{ ansible_env.HOME }}/src/github.com/zfogg/dotfiles"
-    update: yes
-    force: no
+  shell: |
+    GIT_CONFIG_GLOBAL=/dev/null \
+    git clone https://github.com/zfogg/dotfiles.git \
+        "{{ debian_home.stdout }}/src/github.com/zfogg/dotfiles"
   become_user: debian
+  become: yes
+  when: not dotfiles_repo.stat.exists
   register: dotfiles_clone
 
 - name: Run dotfiles installer
   shell: |
-    cd {{ ansible_env.HOME }}/src/github.com/zfogg/dotfiles
+    cd {{ debian_home.stdout }}/src/github.com/zfogg/dotfiles
     ./install.sh
   become_user: debian
-  when: dotfiles_clone.changed
+  become: yes
   register: dotfiles_install
 
 - name: Display dotfiles installation result
