@@ -47,20 +47,20 @@ services:
       - DECONZ=false
       - MQTT=true
 
-  # Home Assistant (optional - currently disabled)
-  # homeassistant:
-  #   container_name: homeassistant
-  #   image: ghcr.io/home-assistant/home-assistant:stable
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - mosquitto
-  #     - zigbee2mqtt
-  #   volumes:
-  #     - /opt/beagleplay-stack/homeassistant:/config
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - /run/dbus:/run/dbus:ro
-  #   network_mode: host
-  #   privileged: true
+  # Home Assistant
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+      - zigbee2mqtt
+    volumes:
+      - /opt/beagleplay-stack/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    network_mode: host
+    privileged: true
 
 volumes:
   mosquitto-data:
