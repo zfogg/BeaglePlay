@@ -1,0 +1,15 @@
+# /etc/fstab: static file system information.
+#
+/dev/mmcblk0p3  /  ext4  noatime,errors=remount-ro  0  1
+/dev/mmcblk0p1  /boot/firmware vfat user,uid=1000,gid=1000,defaults 0 0
+/dev/mmcblk0p2  none    swap    sw      0       0
+debugfs  /sys/kernel/debug  debugfs  mode=755,uid=root,gid=gpio,defaults  0  0
+
+# SD card storage mount
+UUID=def1526d-d825-46ef-b89c-c47d4cecf23e  /mnt/storage  ext4  defaults,noatime  0  2
+
+# Bind mounts for large directories
+/mnt/storage/home       /home           none  bind  0  0
+/mnt/storage/opt        /opt            none  bind  0  0
+/mnt/storage/docker     /var/lib/docker none  bind  0  0
+/mnt/storage/log        /var/log        none  bind  0  0
