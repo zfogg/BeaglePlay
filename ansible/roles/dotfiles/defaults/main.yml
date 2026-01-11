@@ -1,0 +1,27 @@
+---
+dotfiles_repo: https://github.com/zfogg/dotfiles.git
+dotfiles_repo_path: "{{ ansible_env.HOME }}/src/github.com/zfogg/dotfiles.git"
+dotfiles_symlink: "{{ ansible_env.HOME }}/.dotfiles"
+
+# Root-level dotfiles to symlink
+dotfiles_root_files:
+  - .bashrc
+  - .bash_profile
+  - .zshrc
+  - .zprofile
+  - .zshenv
+  - .tmux.conf
+  - .vimrc
+  - .gitconfig
+  - .gitignore_global
+  - .editorconfig
+
+# .config subdirectories to symlink
+dotfiles_config_dirs:
+  - nvim
+  - kitty
+  - alacritty
+  - zsh
+  - htop
+  - git
+  - tmux

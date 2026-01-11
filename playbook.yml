@@ -16,6 +16,10 @@
     - role: docker
       tags: ['docker']
 
+    - role: dotfiles
+      when: enable_dotfiles | default(true)
+      tags: ['dotfiles']
+
     - role: home_automation
       when: enable_home_automation | default(true)
       tags: ['home_automation', 'ha']

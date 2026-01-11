@@ -10,6 +10,7 @@ help:
 	@echo "  make services     - Disable unnecessary services"
 	@echo "  make storage      - Configure storage/fstab"
 	@echo "  make docker       - Install Docker"
+	@echo "  make dotfiles     - Install dotfiles"
 	@echo "  make ha           - Deploy home automation stack"
 	@echo "  make gpg          - Setup GPG forwarding"
 	@echo "  make tailscale    - Install Tailscale"
@@ -41,6 +42,9 @@ storage:
 
 docker:
 	ansible-playbook playbook.yml --tags docker
+
+dotfiles:
+	ansible-playbook playbook.yml --tags dotfiles
 
 ha:
 	ansible-playbook playbook.yml --tags home_automation
