@@ -23,12 +23,24 @@
 - name: Clone dotfiles repository
   shell: |
     GIT_CONFIG_GLOBAL=/dev/null \
-    git clone https://github.com/zfogg/dotfiles.git \
+    git -c url."https://github.com/".insteadOf="git@github.com:" \
+        clone --recurse-submodules https://github.com/zfogg/dotfiles.git \
         "{{ debian_home.stdout }}/src/github.com/zfogg/dotfiles"
   become_user: debian
   become: yes
   when: not dotfiles_repo.stat.exists
   register: dotfiles_clone
+
+- name: Update dotfiles submodules
+  shell: |
+    cd {{ debian_home.stdout }}/src/github.com/zfogg/dotfiles
+    GIT_CONFIG_GLOBAL=/dev/null \
+    git -c url."https://github.com/".insteadOf="git@github.com:" \
+        submodule update --init --recursive
+  become_user: debian
+  become: yes
+  when: dotfiles_repo.stat.exists
+  register: dotfiles_submodules
 
 - name: Run dotfiles installer
   shell: |
