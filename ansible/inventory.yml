@@ -1,0 +1,22 @@
+---
+all:
+  children:
+    beagleplay:
+      hosts:
+        bp:
+          ansible_host: beagleplay
+          ansible_user: debian
+          ansible_python_interpreter: /usr/bin/python3
+
+          # BeaglePlay specific variables
+          storage_device_uuid: def1526d-d825-46ef-b89c-c47d4cecf23e
+          storage_mount_point: /mnt/storage
+
+          # CC1352 Zigbee configuration
+          zigbee_serial_device: /dev/ttyS1
+          zigbee_ieee_address: "00:12:4B:00:29:B9:57:27"
+
+          # Home automation services
+          enable_home_automation: true
+          enable_gpg_forwarding: true
+          enable_dotfiles: true

@@ -1,0 +1,45 @@
+---
+- name: Configure BeaglePlay
+  hosts: beagleplay
+  gather_facts: yes
+
+  roles:
+    - role: common
+      tags: ['common', 'packages']
+
+    - role: storage
+      tags: ['storage', 'fstab']
+
+    - role: docker
+      tags: ['docker']
+
+    - role: home_automation
+      when: enable_home_automation | default(true)
+      tags: ['home_automation', 'ha']
+
+    - role: gpg_forwarding
+      when: enable_gpg_forwarding | default(true)
+      tags: ['gpg', 'gpg_forwarding']
+
+  tasks:
+    - name: Install Tailscale
+      shell: curl -fsSL https://tailscale.com/install.sh | sh
+      args:
+        creates: /usr/bin/tailscale
+      become: yes
+      tags: ['tailscale']
+
+    - name: Display post-installation message
+      debug:
+        msg: |
+          BeaglePlay configuration complete!
+
+          Next steps:
+          1. Configure Tailscale: sudo tailscale up
+          2. Set Tailscale operator: sudo tailscale set --operator=debian
+          3. Enable Tailscale SSH: tailscale set --ssh=true
+          4. Access services:
+             - Zigbee2MQTT UI: http://beagleplay.local:8080
+             - diyHue Bridge:  http://beagleplay.local
+             - Home Assistant: http://beagleplay.local:8123
+      tags: ['always']

@@ -1,0 +1,50 @@
+---
+- name: Create systemd user directory
+  file:
+    path: /home/debian/.config/systemd/user
+    state: directory
+    mode: '0755'
+    owner: debian
+    group: debian
+  become: yes
+
+- name: Create GPG directory
+  file:
+    path: /home/debian/.gnupg
+    state: directory
+    mode: '0700'
+    owner: debian
+    group: debian
+  become: yes
+
+- name: Deploy GPG agent forwarding systemd service
+  copy:
+    src: "{{ playbook_dir }}/../root/home/debian/.config/systemd/user/gpg-agent-forward.service"
+    dest: /home/debian/.config/systemd/user/gpg-agent-forward.service
+    mode: '0644'
+    owner: debian
+    group: debian
+  become: yes
+  notify: Reload systemd user
+
+- name: Deploy GPG configuration
+  copy:
+    src: "{{ playbook_dir }}/../root/home/debian/.gnupg/{{ item }}"
+    dest: /home/debian/.gnupg/{{ item }}
+    mode: '0600'
+    owner: debian
+    group: debian
+  loop:
+    - gpg.conf
+    - gpg-agent.conf
+  become: yes
+
+- name: Enable GPG agent forwarding service
+  systemd:
+    name: gpg-agent-forward.service
+    enabled: yes
+    state: started
+    scope: user
+  become_user: debian
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_uid }}"

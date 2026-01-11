@@ -1,0 +1,33 @@
+---
+- name: Create storage mount point
+  file:
+    path: "{{ storage_mount_point }}"
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Create storage subdirectories
+  file:
+    path: "{{ storage_mount_point }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - home
+    - opt
+    - docker
+    - log
+  become: yes
+
+- name: Configure fstab for SD card storage
+  template:
+    src: fstab.j2
+    dest: /etc/fstab
+    mode: '0644'
+    backup: yes
+  become: yes
+  notify: Reload systemd
+
+- name: Mount all filesystems
+  command: mount -a
+  become: yes
+  changed_when: false

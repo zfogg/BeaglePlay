@@ -1,0 +1,62 @@
+---
+- name: Create home automation directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: debian
+    group: debian
+  loop:
+    - /home/debian/beagleplay-stack
+    - /opt/beagleplay-stack/diyhue
+    - /opt/beagleplay-stack/zigbee2mqtt
+    - /opt/beagleplay-stack/mosquitto
+    - /opt/beagleplay-stack/homeassistant
+  become: yes
+
+- name: Deploy docker-compose.yml
+  copy:
+    src: "{{ playbook_dir }}/../root/home/debian/beagleplay-stack/docker-compose.yml"
+    dest: /home/debian/beagleplay-stack/docker-compose.yml
+    mode: '0644'
+    owner: debian
+    group: debian
+  become: yes
+
+- name: Deploy diyHue configuration files
+  copy:
+    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/diyhue/{{ item }}"
+    dest: /opt/beagleplay-stack/diyhue/{{ item }}
+    mode: '0644'
+  loop:
+    - config.yaml
+    - lights.yaml
+    - sensors.yaml
+  become: yes
+
+- name: Deploy Zigbee2MQTT configuration
+  copy:
+    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/zigbee2mqtt/configuration.yaml"
+    dest: /opt/beagleplay-stack/zigbee2mqtt/configuration.yaml
+    mode: '0644'
+  become: yes
+
+- name: Deploy Mosquitto configuration
+  copy:
+    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/mosquitto/mosquitto.conf"
+    dest: /opt/beagleplay-stack/mosquitto/mosquitto.conf
+    mode: '0644'
+  become: yes
+
+- name: Deploy Home Assistant configuration
+  copy:
+    src: "{{ playbook_dir }}/../root/opt/beagleplay-stack/homeassistant/configuration.yaml"
+    dest: /opt/beagleplay-stack/homeassistant/configuration.yaml
+    mode: '0644'
+  become: yes
+
+- name: Start home automation stack
+  command: docker compose up -d
+  args:
+    chdir: /home/debian/beagleplay-stack
+  become_user: debian
