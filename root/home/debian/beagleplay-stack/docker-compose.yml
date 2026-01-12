@@ -11,6 +11,7 @@ services:
       - mosquitto-data:/mosquitto/data
       - mosquitto-log:/mosquitto/log
     network_mode: host
+    mem_limit: 100m
 
   # Zigbee coordinator using BeaglePlay CC1352 radio
   zigbee2mqtt:
@@ -29,6 +30,7 @@ services:
     ports:
       - "8080:8080"
     network_mode: host
+    mem_limit: 300m
 
   # Philips Hue bridge emulator
   diyhue:
@@ -46,6 +48,7 @@ services:
       - IP=0.0.0.0
       - DECONZ=false
       - MQTT=true
+    mem_limit: 150m
 
   # Home Assistant
   homeassistant:
@@ -60,7 +63,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     network_mode: host
+    devices:
+      - /dev/ttyS1:/dev/ttyS1
     privileged: true
+    mem_limit: 400m
 
 volumes:
   mosquitto-data:
