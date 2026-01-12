@@ -18,7 +18,7 @@ elgato:
   enabled: true
 esphome:
   enabled: true
-gateway: 0.0.0.1
+gateway: 192.168.1.1
 govee:
   enabled: true
 homeassistant:
@@ -26,7 +26,7 @@ homeassistant:
 hue: {}
 hyperion:
   enabled: true
-ipaddress: 0.0.0.0
+ipaddress: 192.168.1.228
 linkbutton:
   lastlinkbuttonpushed: 1768088588
 loglevel: INFO
