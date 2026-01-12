@@ -5,6 +5,9 @@
 /dev/mmcblk0p2  none    swap    sw      0       0
 debugfs  /sys/kernel/debug  debugfs  mode=755,uid=root,gid=gpio,defaults  0  0
 
+# SD card swap file (tertiary fallback)
+{{ storage_mount_point }}/swapfile  none  swap  sw,pri={{ sd_swap_priority }}  0  0
+
 # SD card storage mount
 UUID={{ storage_device_uuid }}  {{ storage_mount_point }}  ext4  defaults,noatime  0  2
 

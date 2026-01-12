@@ -31,3 +31,30 @@
   command: mount -a
   become: yes
   changed_when: false
+
+- name: Create swap file on SD card
+  command: fallocate -l {{ sd_swap_size }} {{ storage_mount_point }}/swapfile
+  args:
+    creates: "{{ storage_mount_point }}/swapfile"
+  become: yes
+
+- name: Set swap file permissions
+  file:
+    path: "{{ storage_mount_point }}/swapfile"
+    mode: '0600'
+    owner: root
+    group: root
+  become: yes
+
+- name: Format swap file
+  command: mkswap {{ storage_mount_point }}/swapfile
+  become: yes
+  when: ansible_swaptotal_mb is defined
+  register: mkswap_result
+  changed_when: "'Setting up swapspace' in mkswap_result.stdout"
+
+- name: Enable swap file
+  command: swapon {{ storage_mount_point }}/swapfile
+  become: yes
+  when: ansible_swaptotal_mb is defined
+  ignore_errors: yes

@@ -11,6 +11,8 @@ all:
           # BeaglePlay specific variables
           storage_device_uuid: def1526d-d825-46ef-b89c-c47d4cecf23e
           storage_mount_point: /mnt/storage
+          sd_swap_size: 4G
+          sd_swap_priority: -3
 
           # CC1352 Zigbee configuration
           zigbee_serial_device: /dev/ttyS1
