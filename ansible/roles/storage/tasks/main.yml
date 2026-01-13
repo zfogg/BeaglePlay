@@ -37,6 +37,7 @@
   args:
     creates: "{{ storage_mount_point }}/swapfile"
   become: yes
+  register: swap_file_created
 
 - name: Set swap file permissions
   file:
@@ -49,12 +50,10 @@
 - name: Format swap file
   command: mkswap {{ storage_mount_point }}/swapfile
   become: yes
-  when: ansible_swaptotal_mb is defined
+  when: swap_file_created is changed
   register: mkswap_result
-  changed_when: "'Setting up swapspace' in mkswap_result.stdout"
 
 - name: Enable swap file
   command: swapon {{ storage_mount_point }}/swapfile
   become: yes
-  when: ansible_swaptotal_mb is defined
-  ignore_errors: yes
+  when: mkswap_result is changed
