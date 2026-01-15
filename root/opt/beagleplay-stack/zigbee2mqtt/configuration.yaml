@@ -1,6 +1,4 @@
-homeassistant:
-  enabled: true
-  discovery_topic: homeassistant
+version: 4
 mqtt:
   base_topic: zigbee2mqtt
   server: mqtt://localhost:1883
@@ -10,13 +8,15 @@ serial:
   baudrate: 115200
   rtscts: false
 advanced:
-  log_level: debug
+  log_level: info
   transmit_power: 20
+homeassistant:
+  enabled: true
+  discovery_topic: homeassistant
 frontend:
   enabled: true
   port: 8080
   host: 0.0.0.0
-version: 4
 devices:
   '0x001788010ebc5503':
-    friendly_name: '0x001788010ebc5503'
+    friendly_name: 'Big Bedroom Lamp'
