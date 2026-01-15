@@ -22,3 +22,4 @@ all:
           enable_home_automation: true
           enable_gpg_forwarding: true
           enable_dotfiles: true
+          enable_homebrew: true

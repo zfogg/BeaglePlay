@@ -1,0 +1,50 @@
+---
+# Install Homebrew and packages
+
+- name: Get debian user home directory
+  shell: echo ~debian
+  register: debian_home
+  changed_when: false
+
+- name: Check if Homebrew is installed
+  stat:
+    path: /home/linuxbrew/.linuxbrew/bin/brew
+  register: homebrew_binary
+
+- name: Install Homebrew
+  shell: |
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  become_user: debian
+  become: yes
+  when: not homebrew_binary.stat.exists
+  register: homebrew_install
+
+- name: Add Homebrew to PATH in .zshrc
+  lineinfile:
+    path: "{{ debian_home.stdout }}/.zshrc"
+    line: 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"'
+    create: yes
+    state: present
+    owner: debian
+    group: debian
+  become: yes
+
+- name: Install git-delta via Homebrew
+  shell: |
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    brew install git-delta
+  args:
+    creates: /home/linuxbrew/.linuxbrew/bin/delta
+  become_user: debian
+  become: yes
+  register: delta_install
+
+- name: Display installation results
+  debug:
+    msg: |
+      Homebrew installation complete!
+      - Homebrew: {{ 'newly installed' if homebrew_install.changed else 'already installed' }}
+      - git-delta: {{ 'newly installed' if delta_install.changed else 'already installed' }}
+
+      You can now use 'brew' commands and 'delta' for enhanced git diffs.
+  when: homebrew_install is defined or delta_install is defined

@@ -16,6 +16,10 @@
     - role: docker
       tags: ['docker']
 
+    - role: homebrew
+      when: enable_homebrew | default(true)
+      tags: ['homebrew', 'brew']
+
     - role: dotfiles
       when: enable_dotfiles | default(true)
       tags: ['dotfiles']
