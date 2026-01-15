@@ -41,6 +41,13 @@
     creates: ~/.cargo/bin/uv
   become_user: "{{ ansible_user }}"
 
+- name: Install pygments-base16 via pip
+  pip:
+    name: pygments-base16
+    state: present
+    extra_args: --break-system-packages
+  become: yes
+
 - name: Configure sudoers for debian user (no password)
   copy:
     content: "debian ALL=(ALL) NOPASSWD: ALL\n"

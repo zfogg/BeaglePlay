@@ -29,22 +29,30 @@
     group: debian
   become: yes
 
-- name: Install git-delta via Homebrew
+- name: Copy Brewfile to home directory
+  copy:
+    src: Brewfile
+    dest: "{{ debian_home.stdout }}/.Brewfile"
+    owner: debian
+    group: debian
+    mode: '0644'
+  become: yes
+
+- name: Install packages from Brewfile
   shell: |
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    brew install git-delta
-  args:
-    creates: /home/linuxbrew/.linuxbrew/bin/delta
+    brew bundle --global
   become_user: debian
   become: yes
-  register: delta_install
+  register: brew_bundle
+  changed_when: "'Installing' in brew_bundle.stdout or 'Upgrading' in brew_bundle.stdout"
 
 - name: Display installation results
   debug:
     msg: |
       Homebrew installation complete!
       - Homebrew: {{ 'newly installed' if homebrew_install.changed else 'already installed' }}
-      - git-delta: {{ 'newly installed' if delta_install.changed else 'already installed' }}
+      - Brewfile packages: {{ 'updated' if brew_bundle.changed else 'up to date' }}
 
-      You can now use 'brew' commands and 'delta' for enhanced git diffs.
-  when: homebrew_install is defined or delta_install is defined
+      You can now use 'brew' commands and packages from the Brewfile.
+  when: homebrew_install is defined or brew_bundle is defined

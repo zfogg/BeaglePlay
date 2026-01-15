@@ -1,0 +1,8 @@
+# Brewfile for BeaglePlay
+# Install packages with: brew bundle
+
+# Git tools
+brew "git-delta"
+
+# CLI tools
+brew "bat"
