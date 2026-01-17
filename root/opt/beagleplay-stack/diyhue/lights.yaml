@@ -43,3 +43,48 @@
       mqttTls: false
       mqttTlsInsecure: false
       mqttUser: ''
+'2':
+  id_v2: 7f8a2c1d-4e5b-4a9c-b3d6-9e1f7c8a2b4d
+  name: Desk Strip
+  modelid: LST002
+  uniqueid: 00:17:88:01:0e:f9:41:61-0b
+  function: mixed
+  state:
+    'on': false
+    bri: 254
+    ct: 370
+    hue: 0
+    sat: 0
+    xy:
+    - 0.5
+    - 0.5
+    alert: select
+    mode: homeautomation
+    reachable: true
+    colormode: xy
+    effect: no_effect
+  config:
+    archetype: huelightstrip
+    function: mixed
+    direction: omnidirectional
+    startup:
+      mode: safety
+      configured: true
+  protocol: mqtt
+  protocol_cfg:
+    uid: 0x001788010ef94161_light_zigbee2mqtt
+    ip: mqtt
+    state_topic: zigbee2mqtt/Desk Strip
+    command_topic: zigbee2mqtt/Desk Strip/set
+    mqtt_server:
+      discoveryPrefix: homeassistant
+      enabled: true
+      mqttCaCerts: null
+      mqttCertfile: null
+      mqttKeyfile: null
+      mqttPassword: ''
+      mqttPort: 1883
+      mqttServer: localhost
+      mqttTls: false
+      mqttTlsInsecure: false
+      mqttUser: ''

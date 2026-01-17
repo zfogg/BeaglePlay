@@ -20,3 +20,7 @@ frontend:
 devices:
   '0x001788010ebc5503':
     friendly_name: 'Big Bedroom Lamp'
+  '0x001788010ef94161':
+    friendly_name: 'Desk Strip'
+  '0x00124b003066aec0':
+    friendly_name: 'TWOPAL Power'

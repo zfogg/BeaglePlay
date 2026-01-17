@@ -65,7 +65,7 @@ services:
       - /run/dbus:/run/dbus:ro
     network_mode: host
     privileged: true
-    mem_limit: 200m
+    mem_limit: 250m
 
 volumes:
   mosquitto-data:
