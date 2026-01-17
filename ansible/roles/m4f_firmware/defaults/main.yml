@@ -1,0 +1,9 @@
+---
+# M4F Firmware role defaults
+
+# Whether to install the M4F firmware binary
+m4f_firmware_install: true
+
+# Whether to automatically start the M4F after deployment
+# Set to false if you want to manually control when M4F starts
+m4f_firmware_autostart: false

@@ -32,6 +32,10 @@
       when: enable_gpg_forwarding | default(true)
       tags: ['gpg', 'gpg_forwarding']
 
+    - role: m4f_firmware
+      when: enable_m4f_firmware | default(true)
+      tags: ['m4f_firmware', 'm4f', 'firmware']
+
   tasks:
     - name: Install Tailscale
       shell: curl -fsSL https://tailscale.com/install.sh | sh

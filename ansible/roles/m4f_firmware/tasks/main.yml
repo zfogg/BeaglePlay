@@ -1,0 +1,64 @@
+---
+# M4F Firmware deployment tasks
+
+- name: Install device tree overlay
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../root/boot/firmware/ti/k3-am625-beagleplay-m4f.dtbo"
+    dest: /boot/firmware/ti/k3-am625-beagleplay-m4f.dtbo
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify: Reboot if device tree changed
+
+- name: Install M4F firmware binary
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../m4f-firmware/build/beagleplay-m4f.elf"
+    dest: /lib/firmware/am62-mcu-m4f0_0-fw
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  when: m4f_firmware_install | default(true)
+
+- name: Check if M4F is available
+  ansible.builtin.stat:
+    path: /sys/class/remoteproc/remoteproc0/name
+  register: m4f_remoteproc
+
+- name: Verify M4F remoteproc device
+  ansible.builtin.command: cat /sys/class/remoteproc/remoteproc0/name
+  register: remoteproc_name
+  changed_when: false
+  failed_when: false
+  when: m4f_remoteproc.stat.exists
+
+- name: Display M4F status
+  ansible.builtin.debug:
+    msg: "M4F RemoteProc: {{ remoteproc_name.stdout | default('Not available - reboot required') }}"
+  when: m4f_remoteproc.stat.exists
+
+- name: Start M4F firmware
+  ansible.builtin.shell: |
+    echo start > /sys/class/remoteproc/remoteproc0/state
+  args:
+    executable: /bin/bash
+  become: true
+  register: m4f_start
+  failed_when: false
+  changed_when: m4f_start.rc == 0
+  when:
+    - m4f_remoteproc.stat.exists
+    - m4f_firmware_autostart | default(false)
+
+- name: Check M4F running state
+  ansible.builtin.command: cat /sys/class/remoteproc/remoteproc0/state
+  register: m4f_state
+  changed_when: false
+  failed_when: false
+  when: m4f_remoteproc.stat.exists
+
+- name: Display M4F running state
+  ansible.builtin.debug:
+    msg: "M4F State: {{ m4f_state.stdout | default('Unknown') }}"
+  when: m4f_remoteproc.stat.exists

@@ -1,0 +1,8 @@
+---
+# M4F Firmware handlers
+
+- name: Reboot if device tree changed
+  ansible.builtin.reboot:
+    msg: "Rebooting to apply M4F device tree overlay"
+    reboot_timeout: 300
+  become: true

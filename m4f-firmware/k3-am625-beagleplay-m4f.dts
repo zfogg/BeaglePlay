@@ -1,0 +1,56 @@
+/dts-v1/;
+/plugin/;
+
+/*
+ * Complete M4F enablement for BeaglePlay
+ * Adds reserved memory regions, mailbox, and enables M4F core
+ */
+
+/ {
+	compatible = "beagle,am625-beagleplay", "ti,am625";
+
+	fragment@0 {
+		target-path = "/";
+		__overlay__ {
+			reserved-memory {
+				#address-cells = <2>;
+				#size-cells = <2>;
+
+				/* M4F DMA memory pool */
+				mcu_m4fss_dma_memory_region: m4f-dma-memory@9cb00000 {
+					compatible = "shared-dma-pool";
+					reg = <0x00 0x9cb00000 0x00 0x100000>;
+					no-map;
+				};
+
+				/* M4F IPC memory (vring buffers) */
+				mcu_m4fss_memory_region: m4f-memory@9cc00000 {
+					compatible = "shared-dma-pool";
+					reg = <0x00 0x9cc00000 0x00 0x200000>;
+					no-map;
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target-path = "/bus@f0000/bus@4000000/m4fss@5000000";
+		__overlay__ {
+			status = "okay";
+			memory-region = <&mcu_m4fss_dma_memory_region>,
+					<&mcu_m4fss_memory_region>;
+			mboxes = <&mailbox0_cluster0>, <&mbox_m4_0>;
+			mbox-names = "tx", "rx";
+		};
+	};
+
+	fragment@2 {
+		target-path = "/bus@f0000/mailbox@29000000";
+		__overlay__ {
+			mbox_m4_0: mbox-m4-0 {
+				ti,mbox-rx = <0 0 0>;
+				ti,mbox-tx = <1 0 0>;
+			};
+		};
+	};
+};
